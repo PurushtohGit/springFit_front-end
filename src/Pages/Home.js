@@ -1,7 +1,7 @@
 import { Layout } from "antd";
 import icon from "../images/spring-fit.png";
 
-import Branch from "../Component/Branch";
+import Branch from "../Component/Branch/Branch";
 
 function Home() {
   const { Header, Content, Footer } = Layout;
@@ -9,7 +9,7 @@ function Home() {
     <Layout className="site-layout">
       <Header
         className="site-layout-background"
-        style={{ padding: 0, height: 90, backgroundColor: "black" }}
+        style={{ padding: 0, height: 90 }}
       >
         <img
           src={icon}
