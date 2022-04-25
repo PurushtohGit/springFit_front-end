@@ -13,3 +13,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+/* .anticon svg {
+  height: 1.5em;
+  width: 1.5em;
+} */
+.ant-table-thead > tr > th {
+  background-color: cadetblue;
+  font-size: 20px;
+}
+.ant-table-container table > thead > {
+  border-radius: "20px";
+}

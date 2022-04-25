@@ -1,7 +1,7 @@
 import { Layout } from "antd";
 import icon from "../images/spring-fit.png";
 
-import Branch from "../Component/Branch/Branch";
+import Branch from "../Pagess/Branch/Branch";
 
 function Home() {
   const { Header, Content, Footer } = Layout;
@@ -18,7 +18,10 @@ function Home() {
         />
       </Header>
       <Content
-        style={{ margin: "24px 16px 0", overflow: "initial", minHeight: 500 }}
+        style={{
+          margin: "24px 16px 0",
+          overflow: "initial",
+        }}
       >
         <div
           className="site-layout-background"

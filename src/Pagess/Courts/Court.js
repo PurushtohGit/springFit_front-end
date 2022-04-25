@@ -1,9 +1,14 @@
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import { Table, Space, Modal, Button, Popconfirm } from "antd";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddCourt from "./AddCourt";
+// import "../../index.css";
 
 import EditCourt from "./EditCourt";
 
@@ -15,8 +20,9 @@ function Court() {
   const [updateCourtData, setUpdateCourtData] = useState([]);
 
   const callCourtData = async () => {
+    const getCourtId = id;
     const getCourtData = await axios.get(
-      `http://localhost:8000/api/courts/${id}`
+      `http://localhost:8000/api/courts/${getCourtId}`
     );
 
     setCourtData(getCourtData.data);
@@ -30,7 +36,6 @@ function Court() {
   const onDelete = async (record) => {
     const deleteId = record._id;
     await axios.delete(`http://localhost:8000/api/court/${deleteId}`);
-    console.log(record);
     callCourtData();
   };
 
@@ -42,9 +47,8 @@ function Court() {
         onCoaching: values.onCoaching,
         onMembership: values.onMembership,
       },
-      branchId: id,
     };
-    await axios.post(`http://localhost:8000/api/court`, body);
+    await axios.post(`http://localhost:8000/api/court/${id}`, body);
     callCourtData();
   };
 
@@ -68,7 +72,7 @@ function Court() {
       title: "Court Name",
       dataIndex: "name",
       key: "name",
-      width: "25%",
+
       render: (text) => <a>{text}</a>,
     },
     {
@@ -80,7 +84,6 @@ function Court() {
           // dataIndex: "playersAllowed.onCoaching",
           render: (record) => record.playersAllowed.onCoaching,
           key: "companyAddress",
-          width: 200,
         },
         {
           title: "Membership",
@@ -94,7 +97,7 @@ function Court() {
     {
       title: "Action",
       key: "action",
-      width: "25%",
+
       render: (text, record) => (
         <Space size="middle">
           <EditOutlined
@@ -124,10 +127,11 @@ function Court() {
         style={{ fontWeight: 800, float: "right", marginBottom: 20 }}
         onClick={() => setAddModalVisible(true)}
       >
-        ADD
+        <PlusCircleOutlined />
+        ADD COURT
       </Button>
       <Modal
-        title="Add Branch"
+        title=" Court Add"
         visible={AddModalVisible}
         onCancel={() => setAddModalVisible(false)}
         footer={null}

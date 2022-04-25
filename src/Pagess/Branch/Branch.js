@@ -1,16 +1,23 @@
 import { Table, Space, Modal, Button, Popconfirm } from "antd";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteFilled,
+  EyeOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import EditForm from "./EditForm";
 import AddForm from "./AddForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { MdOutlineInventory } from "react-icons/md";
 
 function Branch() {
   const [tableData, setTableData] = useState([]);
   const [EditModalVisible, setEditModalVisible] = useState(false);
   const [AddModalVisible, setAddModalVisible] = useState(false);
   const [updateData, setUpdateData] = useState([]);
+  let navigate = useNavigate();
 
   const callData = async () => {
     const CompanyId = "625fa271c7f907883eb2ed07";
@@ -44,8 +51,18 @@ function Branch() {
   const onDelete = async (record) => {
     const deleteId = record._id;
     await axios.delete(`http://localhost:8000/api/branches/${deleteId}`);
-    console.log(record);
+
     callData();
+  };
+
+  // Inventory
+
+  const viewInventory = async (record) => {
+    const brId = record._id;
+    const inventoryId = await axios.get(
+      `http://localhost:8000/api/inventory/${brId}`
+    );
+    navigate(`${brId}/inventory/${inventoryId.data}/`);
   };
 
   const columns = [
@@ -100,11 +117,25 @@ function Branch() {
             cancelText="No"
             onConfirm={() => onDelete(record)}
           >
-            <DeleteOutlined style={{ color: "red" }} />
+            <DeleteFilled style={{ color: "red" }} />
           </Popconfirm>
           <Link to={`/branch/${record._id}/courts`}>
             <EyeOutlined style={{ color: "green" }} />
           </Link>
+
+          <Button
+            ghost
+            style={{
+              borderColor: "#F8B400",
+              color: "#F8B400",
+              display: "flex",
+              alignItems: "center",
+            }}
+            onClick={() => viewInventory(record)}
+          >
+            <MdOutlineInventory />
+            <span style={{ marginLeft: 5 }}>Inventory</span>
+          </Button>
         </Space>
       ),
     },
@@ -117,11 +148,12 @@ function Branch() {
         style={{ fontWeight: 800, float: "right", marginBottom: 20 }}
         onClick={() => setAddModalVisible(true)}
       >
-        ADD
+        <PlusCircleOutlined />
+        ADD BRANCH
       </Button>
 
       <Modal
-        title="Add Branch"
+        title=" Branch Add"
         visible={AddModalVisible}
         onCancel={() => setAddModalVisible(false)}
         footer={null}
