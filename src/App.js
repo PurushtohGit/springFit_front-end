@@ -7,20 +7,32 @@ import Lay from "./Component/Lay";
 import Member from "./Pagess/Member/Member";
 import MemberShip from "./Pagess/Membership/Membership";
 import Inventory from "./Component/Inventory";
-import Inven from "./Component/InventoryProduct";
+import Product from "./Pagess/Products/Products";
+import MemberDetail from "./Pagess/MemberDetail";
+import Category from "./Pagess/Category/Category";
+import CourtBooking from "./Pagess/CourtBooking";
 
 function App() {
   return (
     <Routes>
       <Route exact path="/" index element={<Navigate to="/branch" />} />
       <Route path="/branch" element={<Home />} />
-      <Route path="/branch/:branchid" element={<Lay />}>
+      <Route path="/branch/:id" element={<Lay />}>
         <Route path="courts" index element={<Court />} />
+        <Route
+          path="courts/:courtId/court-booking"
+          element={<CourtBooking />}
+        />
         <Route path="member" element={<Member />} />
+        <Route
+          path="member/:memberId/member-details"
+          element={<MemberDetail />}
+        />
         <Route path="membership" element={<MemberShip />} />
       </Route>
-      <Route path="/branch/:id/inventory/:id/" element={<Inventory />}>
-        <Route path="category/:categoryid/products" element={<Inven />} />
+      <Route path="branch/:branchId/inventory/:InvId" element={<Inventory />}>
+        <Route index element={<Category />} />
+        <Route path="category/:categoryId/products" element={<Product />} />
       </Route>
     </Routes>
   );

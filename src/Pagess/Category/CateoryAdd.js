@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Form, Button } from "antd";
+import { Input, Form, Button, Switch } from "antd";
 
 function CategoryAdd({
   onCategoryFinish,
@@ -46,7 +46,7 @@ function CategoryAdd({
           },
         ]}
       >
-        <Input />
+        <Switch defaultChecked />
       </Form.Item>
 
       <Form.Item

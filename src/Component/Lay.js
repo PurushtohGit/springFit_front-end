@@ -62,9 +62,7 @@ function Lay() {
           >
             <Outlet />
           </Content>
-          <Footer style={{ textAlign: "center" }}>
-            Ant Design ©2018 Created by Ant UED
-          </Footer>
+          <Footer style={{ textAlign: "center" }}>©2018 SPRING FIT</Footer>
         </Layout>
       </Layout>
     </Layout>

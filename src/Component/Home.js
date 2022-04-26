@@ -14,25 +14,20 @@ function Home() {
         <img
           src={icon}
           alt="spring-fit icon"
-          style={{ width: 80, height: 80, alignItems: "center" }}
+          style={{ width: 80, height: 80 }}
         />
       </Header>
       <Content
         style={{
-          margin: "24px 16px 0",
+          // margin: "24px 16px 0",
           overflow: "initial",
         }}
       >
-        <div
-          className="site-layout-background"
-          style={{ padding: 24, textAlign: "center" }}
-        >
+        <div className="site-layout-background" style={{ padding: 24 }}>
           <Branch />
         </div>
       </Content>
-      <Footer style={{ textAlign: "center" }}>
-        Ant Design ©2018 Created by Ant UED
-      </Footer>
+      <Footer style={{ textAlign: "center" }}>©2018 SPRING FIT</Footer>
     </Layout>
   );
 }

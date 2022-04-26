@@ -10,12 +10,14 @@ import {
 import axios from "axios";
 import AddMember from "./AddMember";
 import EditMember from "./EditMember";
+import { Link } from "react-router-dom";
 function Member() {
   // Add Modal
   const [MemberAddVisible, setMemberAddVisible] = useState(false);
   const [EditMemberModalVisible, setEditMemberModalVisible] = useState(false);
   const [UpdateMemberData, setUpdateMemberData] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [MemberViewVisible, setMemberViewVisible] = useState(false);
 
   const { id } = useParams();
 
@@ -32,22 +34,9 @@ function Member() {
     memberData();
   }, []);
 
-  const addMemberData = async (values) => {
-    let body = {
-      name: values.name,
-      RFID: values.RFID,
-      gender: values.gender,
-      address: values.address,
-      mobile: values.mobile,
-      email: values.email,
-    };
-    const branchMemId = id;
-    await axios.post(`http://localhost:8000/api/member/${branchMemId}`, body);
+  const memberAddOnFinish = async (value) => {
+    await axios.post(`http://localhost:8000/api/member/${id}`, value);
     memberData();
-  };
-
-  const memberAddOnFinish = (values) => {
-    addMemberData(values);
     setMemberAddVisible(false);
   };
 
@@ -101,6 +90,20 @@ function Member() {
       key: "email",
     },
     {
+      title: "Booking",
+      key: "booking",
+      render: (text, record) => (
+        <Space size="middle">
+          <Link to={`${record._id}/member-details`}>
+            <Button onClick={() => setMemberViewVisible(true)}>
+              <EyeOutlined style={{ color: "green" }} />
+              View
+            </Button>
+          </Link>
+        </Space>
+      ),
+    },
+    {
       title: "Action",
       key: "action",
 
@@ -121,7 +124,6 @@ function Member() {
           >
             <DeleteOutlined style={{ color: "red" }} />
           </Popconfirm>
-          <EyeOutlined style={{ color: "green" }} />
         </Space>
       ),
     },
@@ -139,7 +141,7 @@ function Member() {
         ADD MEMBER
       </Button>
       <Modal
-        title=" Member Add"
+        title="Add Member "
         visible={MemberAddVisible}
         onCancel={() => setMemberAddVisible(false)}
         footer={null}
@@ -154,7 +156,7 @@ function Member() {
       </Modal>
 
       <Modal
-        title="Member Edit"
+        title=" Edit Member "
         visible={EditMemberModalVisible}
         onCancel={() => setEditMemberModalVisible(false)}
         footer={null}
@@ -168,7 +170,9 @@ function Member() {
           memberData={memberData}
         />
       </Modal>
-      <Table columns={columns} dataSource={tableData} rowKey="_id" />
+      <div style={{ backgroundColor: "white", marginTop: 50, padding: 20 }}>
+        <Table columns={columns} dataSource={tableData} rowKey="_id" />
+      </div>
     </>
   );
 }

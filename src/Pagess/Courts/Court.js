@@ -2,12 +2,14 @@ import {
   EditOutlined,
   DeleteOutlined,
   PlusCircleOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
 import { Table, Space, Modal, Button, Popconfirm } from "antd";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddCourt from "./AddCourt";
+import { Link } from "react-router-dom";
 // import "../../index.css";
 
 import EditCourt from "./EditCourt";
@@ -115,6 +117,9 @@ function Court() {
           >
             <DeleteOutlined style={{ color: "red" }} />
           </Popconfirm>
+          <Link to={`${record._id}/court-booking`}>
+            <EyeOutlined style={{ color: "green" }} />
+          </Link>
         </Space>
       ),
     },
@@ -131,7 +136,7 @@ function Court() {
         ADD COURT
       </Button>
       <Modal
-        title=" Court Add"
+        title="Add Court "
         visible={AddModalVisible}
         onCancel={() => setAddModalVisible(false)}
         footer={null}
@@ -145,7 +150,7 @@ function Court() {
         />
       </Modal>
       <Modal
-        title="Court Edit"
+        title="Edit Court "
         visible={EditCourtModalVisible}
         onCancel={() => setEditCourtModalVisible(false)}
         footer={null}
@@ -159,8 +164,9 @@ function Court() {
           callCourtData={callCourtData}
         />
       </Modal>
-
-      <Table columns={columns} dataSource={CourtData} rowKey="_id" />
+      <div style={{ backgroundColor: "white", marginTop: 50, padding: 20 }}>
+        <Table columns={columns} dataSource={CourtData} rowKey="_id" />
+      </div>
     </>
   );
 }

@@ -1,8 +1,6 @@
 import { Layout } from "antd";
 import { Outlet } from "react-router";
 import icon from "../images/spring-fit.png";
-import Category from "../Pagess/Category/Category";
-import Items from "../Pagess/Products/Products";
 
 function Inventory() {
   const { Header, Content } = Layout;
@@ -25,8 +23,8 @@ function Inventory() {
       </Header>
       <Header
         style={{
-          marginTop: 30,
-          backgroundColor: "#BAB5B5",
+          marginTop: 10,
+          backgroundColor: "white",
           margin: "48px 30px 0",
           borderRadius: 10,
         }}
@@ -40,7 +38,7 @@ function Inventory() {
           height: "100vh",
         }}
       >
-        <Category />
+        <Outlet />
       </Content>
     </Layout>
   );

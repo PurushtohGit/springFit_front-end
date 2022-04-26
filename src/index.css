@@ -18,9 +18,15 @@ code {
   width: 1.5em;
 } */
 .ant-table-thead > tr > th {
-  background-color: cadetblue;
-  font-size: 20px;
+  background-color: #66b366;
+  font-size: 18px;
 }
 .ant-table-container table > thead > {
   border-radius: "20px";
+}
+tr:nth-child(odd) {
+  background: white;
+}
+tr:nth-child(even) {
+  background: #e9fdec;
 }

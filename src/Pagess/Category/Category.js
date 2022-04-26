@@ -1,4 +1,4 @@
-import { Table, Tag, Space, Button, Popconfirm, Modal } from "antd";
+import { Table, Space, Button, Popconfirm, Modal, Switch } from "antd";
 import { useEffect, useState } from "react";
 import {
   EditOutlined,
@@ -6,7 +6,7 @@ import {
   EyeOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
-import { Outlet, useParams } from "react-router";
+import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import CategoryAdd from "./CateoryAdd";
@@ -17,10 +17,10 @@ function Category() {
   const [EditCategory, setEditCategory] = useState();
   const [CategoryName, setCategoryName] = useState();
   const [CategoryUpdate, setCategoryUpdate] = useState();
-  const { id } = useParams();
+  const { branchId, InvId } = useParams();
 
   const callCategoryData = async () => {
-    const InventoryId = id;
+    const InventoryId = InvId;
     const getData = await axios.get(
       `http://localhost:8000/api/categories/${InventoryId}`
     );
@@ -33,18 +33,17 @@ function Category() {
   }, []);
 
   const addCategoryData = async (values) => {
-    await axios.post(`http://localhost:8000/api/category/${id}`, values);
+    await axios.post(`http://localhost:8000/api/category/${InvId}`, values);
     callCategoryData();
   };
 
   const onCategoryDataDelete = async (record) => {
-    const Inid = id;
+    const Inid = InvId;
     const deleteId = record._id;
     await axios.delete(
       `http://localhost:8000/api/category/${Inid}/${deleteId}`
     );
     callCategoryData();
-    console.log(deleteId);
   };
 
   const categoryAddOnFinish = (values) => {
@@ -56,10 +55,6 @@ function Category() {
     setCategoryAddVisible(true);
   };
 
-  const handleCancel = () => {
-    setCategoryAddVisible(false);
-  };
-
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -67,7 +62,6 @@ function Category() {
   const columns = [
     {
       title: "S.No",
-
       render: (text, record, index) => `${index + 1}`,
     },
     {
@@ -82,6 +76,7 @@ function Category() {
       title: " Status",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => <Switch defaultChecked />,
     },
 
     {
@@ -116,16 +111,8 @@ function Category() {
   const data = [];
   return (
     <>
-      <Button
-        type="primary"
-        style={{ fontWeight: 800, float: "right", marginBottom: 20 }}
-        onClick={showModal}
-      >
-        <PlusCircleOutlined />
-        ADD CATEGORY
-      </Button>
       <Modal
-        title=" Category Add"
+        title=" Add Category"
         visible={CategoryAddVisible}
         onCancel={() => setCategoryAddVisible(false)}
         footer={null}
@@ -139,7 +126,7 @@ function Category() {
         />
       </Modal>
       <Modal
-        title="Category Edit"
+        title="Edit Category"
         visible={EditCategory}
         onCancel={() => setEditCategory(false)}
         footer={null}
@@ -153,8 +140,26 @@ function Category() {
           callCategoryData={callCategoryData}
         />
       </Modal>
-      <div style={{ backgroundColor: "white", marginTop: 50, padding: 20 }}>
-        <Table columns={columns} dataSource={CategoryName} rowKey="_id" />
+      <div style={{ backgroundColor: "white", marginTop: 10, padding: 20 }}>
+        <Button
+          type="primary"
+          style={{
+            fontWeight: 800,
+            float: "right",
+            marginBottom: 20,
+            marginRight: "150px",
+          }}
+          onClick={showModal}
+        >
+          <PlusCircleOutlined />
+          ADD CATEGORY
+        </Button>
+        <Table
+          columns={columns}
+          dataSource={CategoryName}
+          rowKey="_id"
+          style={{ width: "80%", display: "block", margin: "0 auto" }}
+        />
       </div>
     </>
   );

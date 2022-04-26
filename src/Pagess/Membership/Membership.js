@@ -114,7 +114,6 @@ function MemberShip() {
           >
             <DeleteOutlined style={{ color: "red" }} />
           </Popconfirm>
-          <EyeOutlined style={{ color: "green" }} />
         </Space>
       ),
     },
@@ -133,7 +132,7 @@ function MemberShip() {
         ADD MEMBERSHIP
       </Button>
       <Modal
-        title="Add Member"
+        title="Add Membership"
         visible={MemberShipAddVisible}
         onCancel={() => setMemberShipAddVisible(false)}
         footer={null}
@@ -148,7 +147,7 @@ function MemberShip() {
       </Modal>
 
       <Modal
-        title="Member Edit"
+        title="Edit  Membership"
         visible={EditMemberShipModalVisible}
         onCancel={() => setEditMemberShipModalVisible(false)}
         footer={null}
@@ -162,7 +161,9 @@ function MemberShip() {
           memberShipData={memberShipData}
         />
       </Modal>
-      <Table columns={columns} dataSource={tableData} rowKey="_id" />
+      <div style={{ backgroundColor: "white", marginTop: 50, padding: 20 }}>
+        <Table columns={columns} dataSource={tableData} rowKey="_id" />
+      </div>
     </>
   );
 }

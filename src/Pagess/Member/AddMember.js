@@ -1,5 +1,6 @@
 import React from "react";
-import { Input, Form, Button } from "antd";
+import { Input, Form, Button, Select } from "antd";
+const { Option } = Select;
 
 function AddMember({
   onMemberFinish,
@@ -51,16 +52,20 @@ function AddMember({
       </Form.Item>
 
       <Form.Item
-        label="Gender"
         name="gender"
+        label="Gender"
         rules={[
           {
             required: true,
-            message: "Please input your username!",
+            message: "Please select gender!",
           },
         ]}
       >
-        <Input />
+        <Select placeholder="select your gender">
+          <Option value="Male">Male</Option>
+          <Option value="Female">Female</Option>
+          <Option value="Other">Other</Option>
+        </Select>
       </Form.Item>
       <Form.Item
         label="Address"

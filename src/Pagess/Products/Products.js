@@ -1,93 +1,187 @@
-import { Table, Tag, Space, Button, Popconfirm, Modal } from "antd";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
+import { Table, Space, Modal, Button, Popconfirm } from "antd";
+import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import axios from "axios";
+import ProductAdd from "./AddProduct";
+import EditProduct from "./EditProduct";
+// import AddCourt from "./AddCourt";
+// import "../../index.css";
 
-function Product() {
-  // Add Modal
-  const [ProductsAddVisible, setProductsAddVisible] = useState(false);
+// import EditCourt from "./EditCourt";
 
-  const showModal = () => {
-    setProductsAddVisible(true);
+function Court() {
+  const { InvId, categoryId } = useParams();
+
+  const [ProductData, setProductData] = useState([]);
+  const [ProductEditModalVisible, setProductEditModalVisible] = useState(false);
+  const [ProductAddModalVisible, setProductAddModalVisible] = useState(false);
+  const [updateProductData, setupdateProductData] = useState([]);
+
+  const callProductData = async () => {
+    const getProductData = await axios.get(
+      `http://localhost:8000/api/products/${InvId}/${categoryId}`
+    );
+    setProductData(getProductData.data);
   };
 
-  const handleOk = () => {
-    setProductsAddVisible(false);
+  useEffect(() => {
+    callProductData();
+  }, []);
+
+  // delete Row
+  const onDelete = async (record) => {
+    const deleteId = record._id;
+    await axios.delete(
+      `http://localhost:8000/api/product/${InvId}/${deleteId}`
+    );
+    callProductData();
   };
 
-  const handleCancel = () => {
-    setProductsAddVisible(false);
+  // ADD FORM
+  const addProductData = async (values) => {
+    await axios.post(
+      `http://localhost:8000/api/product/${InvId}/${categoryId}`,
+      values
+    );
+    callProductData();
+  };
+
+  const onFinish = (values) => {
+    addProductData(values);
+    setProductAddModalVisible(false);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
   };
 
   const columns = [
     {
-      title: "RefId",
-      dataIndex: "RFID",
-      key: "RFID",
+      title: "S.No",
+
+      render: (text, record, index) => `${index + 1}`,
     },
+
     {
-      title: "Name",
+      title: "Product Name",
       dataIndex: "name",
       key: "name",
 
       render: (text) => <a>{text}</a>,
     },
+    {
+      title: "Buy Price",
+      dataIndex: "buyPrice",
+      key: "buyPrice",
+
+      render: (text) => <a>{text}</a>,
+    },
 
     {
-      title: "Gender",
-      dataIndex: "gender",
-      key: "gender",
-      width: 10,
+      title: "Sell Price",
+      dataIndex: "sellPrice",
+      key: "sellPrice",
+
+      render: (text) => <a>{text}</a>,
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+
+      render: (text) => <a>{text}</a>,
     },
     {
-      title: "Mobile",
-      dataIndex: "mobile",
-      key: "mobile",
+      title: "Min",
+      dataIndex: "min",
+      key: "min",
+
+      render: (text) => <a>{text}</a>,
     },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
+
     {
       title: "Action",
       key: "action",
 
-      render: (_, record) => (
+      render: (text, record) => (
         <Space size="middle">
-          <EditOutlined style={{ color: "blue" }} />
-          <Popconfirm title="Are you sure？" okText="Yes" cancelText="No">
+          <EditOutlined
+            style={{ color: "blue" }}
+            onClick={() => {
+              setProductEditModalVisible(true);
+              setupdateProductData(record);
+            }}
+          />
+          <Popconfirm
+            title="Are you sure？"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => onDelete(record)}
+          >
             <DeleteOutlined style={{ color: "red" }} />
           </Popconfirm>
-          <EyeOutlined style={{ color: "green" }} />
         </Space>
       ),
     },
   ];
 
-  const data = [];
   return (
     <>
-      <Button
-        type="primary"
-        style={{ fontWeight: 800, float: "right", marginBottom: 20 }}
-        onClick={showModal}
-      >
-        ADD
-      </Button>
       <Modal
-        title="Basic Modal"
-        visible={ProductsAddVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      ></Modal>
-      <Table columns={columns} dataSource={data} />
+        title=" Add Product"
+        visible={ProductAddModalVisible}
+        onCancel={() => setProductAddModalVisible(false)}
+        footer={null}
+        width={800}
+        height={500}
+      >
+        <ProductAdd
+          onProductFinish={onFinish}
+          onProductFinishFailed={onFinishFailed}
+          setProductAddModalVisible={setProductAddModalVisible}
+        />
+      </Modal>
+
+      <Modal
+        title="Edit Product"
+        visible={ProductEditModalVisible}
+        onCancel={() => ProductEditModalVisible(false)}
+        footer={null}
+        width={800}
+        height={500}
+      >
+        <EditProduct
+          onFinishFailed={onFinishFailed}
+          setProductEditModalVisible={setProductEditModalVisible}
+          updateProductData={updateProductData}
+          callProductData={callProductData}
+        />
+      </Modal>
+      <div
+        style={{
+          backgroundColor: "white",
+          marginTop: 50,
+          padding: 20,
+          Radius: 20,
+        }}
+      >
+        <Button
+          type="primary"
+          style={{ fontWeight: 800, float: "right", marginBottom: 20 }}
+          onClick={() => setProductAddModalVisible(true)}
+        >
+          <PlusCircleOutlined />
+          ADD Products
+        </Button>
+        <Table columns={columns} dataSource={ProductData} rowKey="_id" />
+      </div>
     </>
   );
 }
 
-export default Product;
+export default Court;

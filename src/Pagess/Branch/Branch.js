@@ -11,6 +11,7 @@ import EditForm from "./EditForm";
 import AddForm from "./AddForm";
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineInventory } from "react-icons/md";
+import { Header } from "antd/lib/layout/layout";
 
 function Branch() {
   const [tableData, setTableData] = useState([]);
@@ -63,6 +64,7 @@ function Branch() {
       `http://localhost:8000/api/inventory/${brId}`
     );
     navigate(`${brId}/inventory/${inventoryId.data}/`);
+    console.log(brId);
   };
 
   const columns = [
@@ -143,17 +145,8 @@ function Branch() {
 
   return (
     <>
-      <Button
-        type="primary"
-        style={{ fontWeight: 800, float: "right", marginBottom: 20 }}
-        onClick={() => setAddModalVisible(true)}
-      >
-        <PlusCircleOutlined />
-        ADD BRANCH
-      </Button>
-
       <Modal
-        title=" Branch Add"
+        title="Add Branch "
         visible={AddModalVisible}
         onCancel={() => setAddModalVisible(false)}
         footer={null}
@@ -167,7 +160,7 @@ function Branch() {
         />
       </Modal>
       <Modal
-        title="Branch Edit"
+        title="Edit Branch "
         visible={EditModalVisible}
         onCancel={() => setEditModalVisible(false)}
         footer={null}
@@ -181,7 +174,28 @@ function Branch() {
           callData={callData}
         />
       </Modal>
-      <Table rowKey="_id" columns={columns} dataSource={tableData} />
+      <Header
+        style={{
+          marginTop: 10,
+          backgroundColor: "white",
+          // margin: "48px 30px 0",
+          borderRadius: 10,
+        }}
+      >
+        <h1>BRANCHES</h1>
+      </Header>
+      <div style={{ backgroundColor: "white", marginTop: 10, padding: 20 }}>
+        <Button
+          type="primary"
+          style={{ fontWeight: 800, float: "right", marginBottom: 20 }}
+          onClick={() => setAddModalVisible(true)}
+        >
+          <PlusCircleOutlined />
+          ADD BRANCH
+        </Button>
+
+        <Table rowKey="_id" columns={columns} dataSource={tableData} />
+      </div>
     </>
   );
 }

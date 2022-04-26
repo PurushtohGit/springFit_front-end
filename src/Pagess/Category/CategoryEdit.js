@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Form, Button } from "antd";
+import { Input, Form, Button, Switch } from "antd";
 import axios from "axios";
 import { useParams } from "react-router";
 
@@ -10,7 +10,7 @@ function CategoryEdit({
   callCategoryData,
 }) {
   const [form] = Form.useForm();
-  const { id } = useParams();
+  const { InvId } = useParams();
 
   form.setFieldsValue({
     name: CategoryUpdate.name,
@@ -19,8 +19,11 @@ function CategoryEdit({
 
   const onEditCategoryFinish = async (val) => {
     const CatId = CategoryUpdate._id;
-    const INid = id;
-    await axios.put(`http://localhost:8000/api/category/${INid}/${CatId}`, val);
+
+    await axios.put(
+      `http://localhost:8000/api/category/${InvId}/${CatId}`,
+      val
+    );
 
     setEditCategory(false);
     callCategoryData();
@@ -67,7 +70,7 @@ function CategoryEdit({
           },
         ]}
       >
-        <Input />
+        <Switch defaultChecked />
       </Form.Item>
 
       <Form.Item
